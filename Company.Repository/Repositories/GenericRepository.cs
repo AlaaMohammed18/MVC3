@@ -18,16 +18,12 @@ namespace Company.Repository.Repositories
             _context = context;
         }
         public void Add(T Entity)
-        {
-            _context.Set<T>().Add(Entity);
-            _context.SaveChanges();
-        }
+            => _context.Set<T>().Add(Entity);
+
 
         public void Delete(T Entity)
-        {
-            _context.Set<T>().Remove(Entity);
-            _context.SaveChanges();
-        }
+            => _context.Set<T>().Remove(Entity);
+
 
         public IEnumerable<T> GetAll()
             => _context.Set<T>().ToList();
@@ -38,9 +34,8 @@ namespace Company.Repository.Repositories
 
 
         public void Update(T Entity)
-        {
-            _context.Set<T>().Update(Entity);
-            _context.SaveChanges();
-        }
+           => _context.Set<T>().Update(Entity);
+
+
     }
 }
