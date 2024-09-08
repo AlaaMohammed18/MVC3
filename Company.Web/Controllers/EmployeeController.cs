@@ -3,7 +3,9 @@ using Company.Data.Entities;
 using Company.Repository.Interfaces;
 using Company.Repository.Repositories;
 using Company.Services.Interfaces;
+using Company.Services.Dto;
 using Company.Services.Services;
+using Company.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Web.Controllers
@@ -11,27 +13,46 @@ namespace Company.Web.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeServices _employeeServices;
+        private readonly IDepartmentServices _departmentServices;
 
-        public EmployeeController(IEmployeeServices employeeServices)
+        public EmployeeController(IEmployeeServices employeeServices , IDepartmentServices departmentServices)
         {
             _employeeServices = employeeServices;
+            _departmentServices = departmentServices;
         }
 
-        [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string SearchInp)
         {
-            var Employees = _employeeServices.GetAll();
-            return View(Employees);
+            ////ViewBag , ViewData , TempData
+            //ViewBag.Message = "Hello From Employee Index(ViewBag)";
+
+            //ViewData["TextMessage"] = "Hello From Employee Index(ViewData)";
+
+            //TempData["TextTempMessage"] = "Hello From Employee Index(TempData)";
+
+            IEnumerable<EmployeeDto> Employees = new List<EmployeeDto>();
+
+            if (string.IsNullOrEmpty(SearchInp))
+            {
+                Employees = _employeeServices.GetAll();
+                return View(Employees);
+            }
+            else
+            {
+                Employees = _employeeServices.GetEmployeeByName(SearchInp);
+                return View(Employees);
+            }
         }
 
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.Departments = _departmentServices.GetAll();
             return View();
         }
-
+        
         [HttpPost]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeDto employee)
         {
             try
             {
@@ -63,7 +84,7 @@ namespace Company.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(int? id, Employee employee)
+        public IActionResult Update(int? id, EmployeeDto employee)
         {
             if (employee.Id != id.Value)
                 return RedirectToAction("NotFoundPage", null, "Home");

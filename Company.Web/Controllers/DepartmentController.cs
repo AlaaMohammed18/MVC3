@@ -2,6 +2,7 @@
 using Company.Data.Entities;
 using Company.Repository.Interfaces;
 using Company.Repository.Repositories;
+using Company.Services.Dto;
 using Company.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,7 @@ namespace Company.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Department department)
+        public IActionResult Create(DepartmentDto department)
         {
             try
             {
@@ -69,7 +70,7 @@ namespace Company.Web.Controllers
 
 
         [HttpPost]
-        public IActionResult Update(int? id , Department department )
+        public IActionResult Update(int? id , DepartmentDto department )
         {
             if (department.Id != id.Value)
                 return RedirectToAction("NotFoundPage", null, "Home");

@@ -1,9 +1,36 @@
-﻿@model IEnumerable<Employee>
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model IEnumerable<EmployeeDto>
+<h1>All Employees</h1>
+<br />  
+<br />  
 
 <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Create New Employee</a>
+
+<div class="row justify-content-center align-items-center mt-5">
+    <form class="row col-8 offset-2" asp-action="Index">
+        <div class="col-8">
+            <input type="text" class="form-control" name="SearchInp" placeholders ="Search By Name" />
+        </div>
+        <div class="col-4">
+            <input type="submit" value="Search" class="btn btn-success" />
+        </div>
+
+    </form>
+</div>
+<br />
+<br />
+@* 
+<div class="mt-5 alert alert-danger">
+    <h3>@ViewBag.Message </h3>
+</div>
+
+<div class="mt-5 alert alert-primary">
+    <h3>@ViewData["TextMessage"] </h3>
+</div>
+
+<div class="mt-5 alert alert-primary">
+    <h3>@TempData["TextTempMessage"] </h3> *@
+</div>
+
 
 @if (Model.Count() > 0)
 {
@@ -11,13 +38,14 @@
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(D => D.Name)</th>
+                <th>@Html.DisplayNameFor(D => D.Image)</th>
                 <th>@Html.DisplayNameFor(D => D.Age)</th>
                 <th>@Html.DisplayNameFor(D => D.Address)</th>
                 <th>@Html.DisplayNameFor(D => D.Salary)</th>
                 <th>@Html.DisplayNameFor(D => D.Email)</th>
                 <th>@Html.DisplayNameFor(D => D.PhoneNumber)</th>
                 <th>@Html.DisplayNameFor(D => D.HiringDate)</th>
-                <th>@Html.DisplayNameFor(D => D.DepartmentID)</th>
+                @* <th>@Html.DisplayNameFor(D => D.DepartmentID)</th> *@
                 <th>@Html.DisplayNameFor(D => D.CreateAt)</th>
                 <th>Details</th>
                 <th>Update</th>
@@ -29,29 +57,18 @@
             {
                 <tr>
                     <td>@employee.Name</td>
+                    <td>
+                        <img src="~/Files/Images/@employee.ImageURL" height="40" width="40" />
+                    </td>
                     <td>@employee.Age</td>
                     <td>@employee.Address</td>
-                    <td>@employee.Salary</td>
-                    <td>@employee.Email</td>
+                    <td>@Html.DisplayFor(M => employee.Salary)</td>
+                    <td>@Html.DisplayFor(M => employee.Email)</td>
                     <td>@employee.PhoneNumber</td>
                     <td>@employee.HiringDate</td>
-                    <td>@employee.DepartmentID</td>
                     <td>@employee.CreateAt</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-warning">
-                            <i class="fas fa-eye"></i>Details
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-action="Update" asp-route-id="@employee.Id" class="btn btn-success">
-                            <i class="fas fa-edit"></i>Update
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger">
-                            <i class="fas fa-trash"></i>Delete
-                        </a>
-                    </td>
+                    <partial name="_ActionButtonsPartialView" model="@employee.Id.ToString()" />
+
 
 
                 </tr>
