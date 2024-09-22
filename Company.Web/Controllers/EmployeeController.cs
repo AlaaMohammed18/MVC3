@@ -7,9 +7,12 @@ using Company.Services.Dto;
 using Company.Services.Services;
 using Company.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Company.Web.Controllers
 {
+    [Authorize]
+
     public class EmployeeController : Controller
     {
         private readonly IEmployeeServices _employeeServices;
